@@ -7,7 +7,7 @@ build:
 	go build -o demo .
 
 .PHONY: generate
-generate: grpcgen genjs gents
+generate: grpcgen genjs gents genopenapiyaml
 
 .PHONY: grpcgen
 grpcgen:
@@ -38,4 +38,8 @@ gents:
 	--js_out=import_style=commonjs:generated/tsgen \
 	--grpc-web_out=import_style=typescript,mode=grpcwebtext:generated/tsgen \
 	server.proto \
+
+.PHONY: genopenapiyaml
+genopenapiyaml:
+	protoc -I ~/github/googleapis/googleapis -I=protos --openapi_out=protos server.proto 
 

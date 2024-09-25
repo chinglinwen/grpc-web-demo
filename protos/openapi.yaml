@@ -1,0 +1,540 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ServerService API
+    description: |-
+        This API represents a simple digital server. It lets you manage Server
+         resources and Disk resources in the server. It defines the following
+         resource model:
+
+         - The API has a collection of [Server][core.wcloud.io.server.v1.Server]
+           resources, named `servers/*`
+
+         - Each Server has a collection of [Disk][core.wcloud.io.server.v1.Disk]
+           resources, named `servers/*/disks/*`
+    version: 0.0.1
+servers:
+    - url: https://core.wcloud.io
+paths:
+    /v1/servers:
+        get:
+            tags:
+                - ServerService
+            description: |-
+                Lists servers. The order is unspecified but deterministic. Newly created
+                 servers will not necessarily be added to the end of this list.
+            operationId: ServerService_ListServers
+            parameters:
+                - name: pageSize
+                  in: query
+                  description: |-
+                    Requested page size. Server may return fewer servers than requested.
+                     If unspecified, server will pick an appropriate default.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageToken
+                  in: query
+                  description: |-
+                    A token identifying a page of results the server should return.
+                     Typically, this is the value of
+                     [ListserversResponse.next_page_token][core.wcloud.io.server.v1.ListserversResponse.next_page_token]
+                     returned from the previous call to `Listservers` method.
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListServersResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        post:
+            tags:
+                - ServerService
+            description: Creates a server, and returns the new Server.
+            operationId: ServerService_CreateServer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Server'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Server'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/servers/*:
+        post:
+            tags:
+                - ServerService
+            operationId: ServerService_UpdateServer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Server'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Server'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/servers/{server}:
+        get:
+            tags:
+                - ServerService
+            description: Gets a server. Returns NOT_FOUND if the server does not exist.
+            operationId: ServerService_GetServer
+            parameters:
+                - name: server
+                  in: path
+                  description: The server id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Server'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - ServerService
+            description: Deletes a server. Returns NOT_FOUND if the server does not exist.
+            operationId: ServerService_DeleteServer
+            parameters:
+                - name: server
+                  in: path
+                  description: The server id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content: {}
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/servers/{server}/disks:
+        get:
+            tags:
+                - ServerService
+            description: |-
+                Lists disks in a server. The order is unspecified but deterministic. Newly
+                 created disks will not necessarily be added to the end of this list.
+                 Returns NOT_FOUND if the server does not exist.
+            operationId: ServerService_ListDisks
+            parameters:
+                - name: server
+                  in: path
+                  description: The server id.
+                  required: true
+                  schema:
+                    type: string
+                - name: pageSize
+                  in: query
+                  description: |-
+                    Requested page size. Server may return fewer disks than requested.
+                     If unspecified, server will pick an appropriate default.
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageToken
+                  in: query
+                  description: |-
+                    A token identifying a page of results the server should return.
+                     Typically, this is the value of
+                     [ListDisksResponse.next_page_token][core.wcloud.io.server.v1.ListDisksResponse.next_page_token].
+                     returned from the previous call to `ListDisks` method.
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ListDisksResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        post:
+            tags:
+                - ServerService
+            description: Creates a book, and returns the new Disk.
+            operationId: ServerService_CreateDisk
+            parameters:
+                - name: server
+                  in: path
+                  description: The server id.
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Disk'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Disk'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/servers/{server}/disks/{disk}:
+        get:
+            tags:
+                - ServerService
+            description: Gets a book. Returns NOT_FOUND if the book does not exist.
+            operationId: ServerService_GetDisk
+            parameters:
+                - name: server
+                  in: path
+                  description: The server id.
+                  required: true
+                  schema:
+                    type: string
+                - name: disk
+                  in: path
+                  description: The disk id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Disk'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        delete:
+            tags:
+                - ServerService
+            description: Deletes a book. Returns NOT_FOUND if the book does not exist.
+            operationId: ServerService_DeleteDisk
+            parameters:
+                - name: server
+                  in: path
+                  description: The server id.
+                  required: true
+                  schema:
+                    type: string
+                - name: disk
+                  in: path
+                  description: The disk id.
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content: {}
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+        patch:
+            tags:
+                - ServerService
+            description: |-
+                Updates a book. Returns INVALID_ARGUMENT if the name of the book
+                 is non-empty and does not equal the existing name.
+            operationId: ServerService_UpdateDisk
+            parameters:
+                - name: server
+                  in: path
+                  description: The server id.
+                  required: true
+                  schema:
+                    type: string
+                - name: disk
+                  in: path
+                  description: The disk id.
+                  required: true
+                  schema:
+                    type: string
+                - name: updateMask
+                  in: query
+                  description: Required. Mask of fields to update.
+                  schema:
+                    type: string
+                    format: field-mask
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Disk'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Disk'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/servers/{server}/disks/{disk}:move:
+        post:
+            tags:
+                - ServerService
+            description: |-
+                Moves a book to another server, and returns the new book. The book
+                 id of the new book may not be the same as the original book.
+            operationId: ServerService_MoveDisk
+            parameters:
+                - name: server
+                  in: path
+                  description: The server id.
+                  required: true
+                  schema:
+                    type: string
+                - name: disk
+                  in: path
+                  description: The disk id.
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MoveDiskRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Disk'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/servers/{server}:merge:
+        post:
+            tags:
+                - ServerService
+            description: |-
+                Merges two servers by adding all disks from the server named
+                 `other_server_name` to server `name`, and deletes
+                 `other_server_name`. Returns the updated server.
+                 The book ids of the moved disks may not be the same as the original disks.
+
+                 Returns NOT_FOUND if either server does not exist.
+                 This call is a no-op if the specified servers are the same.
+            operationId: ServerService_MergeServers
+            parameters:
+                - name: server
+                  in: path
+                  description: The server id.
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/MergeserversRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Server'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+components:
+    schemas:
+        Disk:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: |-
+                        The resource name of the book.
+                         Disk names have the form `servers/{server_id}/disks/{book_id}`.
+                         The name is ignored when creating a book.
+                author:
+                    type: string
+                    description: The name of the book author.
+                title:
+                    type: string
+                    description: The title of the book.
+                read:
+                    type: boolean
+                    description: Value indicating whether the book has been read.
+            description: A single book in the server.
+        GoogleProtobufAny:
+            type: object
+            properties:
+                '@type':
+                    type: string
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        ListDisksResponse:
+            type: object
+            properties:
+                disks:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Disk'
+                    description: The list of disks.
+                nextPageToken:
+                    type: string
+                    description: |-
+                        A token to retrieve next page of results.
+                         Pass this value in the
+                         [ListDisksRequest.page_token][core.wcloud.io.server.v1.ListDisksRequest.page_token]
+                         field in the subsequent call to `ListDisks` method to retrieve the next
+                         page of results.
+            description: Response message for ServerService.ListDisks.
+        ListServersResponse:
+            type: object
+            properties:
+                servers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Server'
+                    description: The list of servers.
+                nextPageToken:
+                    type: string
+                    description: |-
+                        A token to retrieve next page of results.
+                         Pass this value in the
+                         [ListserversRequest.page_token][core.wcloud.io.server.v1.ListserversRequest.page_token]
+                         field in the subsequent call to `Listservers` method to retrieve the next
+                         page of results.
+            description: Response message for ServerService.Listservers.
+        MergeserversRequest:
+            required:
+                - name
+                - otherServer
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: The name of the server we're adding disks to.
+                otherServer:
+                    type: string
+                    description: The name of the server we're removing disks from and deleting.
+            description: |-
+                Describes the server being removed (other_server_name) and updated
+                 (name) in this merge.
+        MoveDiskRequest:
+            required:
+                - name
+                - otherServerName
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: The name of the book to move.
+                otherServerName:
+                    type: string
+                    description: The name of the destination server.
+            description: |-
+                Describes what book to move (name) and what server we're moving it
+                 to (other_server_name).
+        Server:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: |-
+                        The resource name of the server.
+                         Server names have the form `servers/{server_id}`.
+                         The name is ignored when creating a server.
+                theme:
+                    type: string
+                    description: The theme of the server
+            description: A Server contains a collection of disks with a theme.
+        Status:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+tags:
+    - name: ServerService

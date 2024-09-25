@@ -336,8 +336,8 @@ type ListServersRequest struct {
 	PageSize int32 `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// A token identifying a page of results the server should return.
 	// Typically, this is the value of
-	// [ListServersResponse.next_page_token][core.wcloud.io.server.v1.ListServersResponse.next_page_token]
-	// returned from the previous call to `ListServers` method.
+	// [ListserversResponse.next_page_token][core.wcloud.io.server.v1.ListserversResponse.next_page_token]
+	// returned from the previous call to `Listservers` method.
 	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 }
 
@@ -387,7 +387,7 @@ func (x *ListServersRequest) GetPageToken() string {
 	return ""
 }
 
-// Response message for ServerService.ListServers.
+// Response message for ServerService.Listservers.
 type ListServersResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -397,8 +397,8 @@ type ListServersResponse struct {
 	Servers []*Server `protobuf:"bytes,1,rep,name=servers,proto3" json:"servers,omitempty"`
 	// A token to retrieve next page of results.
 	// Pass this value in the
-	// [ListServersRequest.page_token][core.wcloud.io.server.v1.ListServersRequest.page_token]
-	// field in the subsequent call to `ListServers` method to retrieve the next
+	// [ListserversRequest.page_token][core.wcloud.io.server.v1.ListserversRequest.page_token]
+	// field in the subsequent call to `Listservers` method to retrieve the next
 	// page of results.
 	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 }

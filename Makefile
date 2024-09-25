@@ -7,7 +7,7 @@ build:
 	go build -o demo .
 
 .PHONY: generate
-generate: grpcgen genjs gents genopenapiyaml
+generate: grpcgen genjs gents
 
 .PHONY: grpcgen
 grpcgen:
@@ -17,9 +17,6 @@ grpcgen:
 	--go_opt=paths=source_relative \
     --go-grpc_out=generated/grpcgen \
 	--go-grpc_opt=paths=source_relative \
-	--grpc-gateway_out=generated/grpcgen \
-	--grpc-gateway_opt=paths=source_relative \
-	--grpc-gateway_opt=generate_unbound_methods=true \
     --proto_path=protos \
 	protos/server.proto
 
@@ -38,8 +35,3 @@ gents:
 	--js_out=import_style=commonjs:generated/tsgen \
 	--grpc-web_out=import_style=typescript,mode=grpcwebtext:generated/tsgen \
 	server.proto \
-
-.PHONY: genopenapiyaml
-genopenapiyaml:
-	protoc -I ~/github/googleapis/googleapis -I=protos --openapi_out=protos server.proto 
-

@@ -1,17 +1,17 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/grpclog"
+	"google.golang.org/grpc/reflection"
 
 	pb "core.wcloud.io/generated/grpcgen" // Update
 	"core.wcloud.io/services"             // Update
@@ -33,15 +33,16 @@ func main() {
 	grpcServer := grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
 	s := &services.ServerServices{}
 	pb.RegisterServerServiceServer(grpcServer, s)
+	reflection.Register(grpcServer)
 	go func() {
 		log.Fatal(grpcServer.Serve(lis))
 	}()
 
+	wrappedGrpc := grpcweb.WrapServer(grpcServer, grpcweb.WithOriginFunc(func(origin string) bool {
+		// Allow all origins, DO NOT do this in production
+		return true
+	}))
+
 	log.Info("Serving HTTP on ", *httpAddr)
-	httpServer := runtime.NewServeMux()
-	err = pb.RegisterServerServiceHandlerServer(context.Background(), httpServer, s)
-	if err != nil {
-		log.Fatalf("failed to register service, err: %v", err)
-	}
-	log.Fatal(http.ListenAndServe(*httpAddr, httpServer))
+	log.Fatal(http.ListenAndServe(*httpAddr, wrappedGrpc))
 }

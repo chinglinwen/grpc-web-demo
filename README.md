@@ -40,6 +40,8 @@ wget https://github.com/protocolbuffers/protobuf/releases/download/v26.1/protoc-
 	source ~/.bashrc
 	protoc --version
 
+git clone --depth=1 https://github.com/googleapis/googleapis.git ~/.local/googleapis
+
 #https://grpc.io/docs/languages/go/quickstart/
 go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
@@ -55,4 +57,6 @@ npm install -g protoc-gen-js
 wget https://github.com/grpc/grpc-web/releases/download/1.5.0/protoc-gen-grpc-web-1.5.0-linux-x86_64
 sudo mv protoc-gen-grpc-web-1.5.0-linux-x86_64 /usr/local/bin/protoc-gen-grpc-web
 sudo chmod +x /usr/local/bin/protoc-gen-grpc-web
+
+go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 ```

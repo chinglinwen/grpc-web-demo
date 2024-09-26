@@ -12,7 +12,7 @@ generate: grpcgen genjs gents
 .PHONY: grpcgen
 grpcgen:
 	mkdir -p generated/grpcgen
-	protoc -I /home/wen/soft/googleapis \
+	protoc -I ~/.local/googleapis \
 	--go_out=generated/grpcgen \
 	--go_opt=paths=source_relative \
     --go-grpc_out=generated/grpcgen \
@@ -23,7 +23,7 @@ grpcgen:
 .PHONY: genjs
 genjs:
 	mkdir -p generated/jsgen
-	protoc -I $(HOME)/github/googleapis/googleapis -I=protos \
+	protoc -I ~/.local/googleapis -I=protos \
 	--js_out=import_style=commonjs:generated/jsgen \
 	--grpc-web_out=import_style=commonjs,mode=grpcwebtext:generated/jsgen \
 	server.proto \
@@ -31,7 +31,7 @@ genjs:
 .PHONY: gents
 gents:
 	mkdir -p generated/tsgen
-	protoc -I $(HOME)/github/googleapis/googleapis -I=protos \
+	protoc -I ~/.local/googleapis -I=protos \
 	--js_out=import_style=commonjs:generated/tsgen \
 	--grpc-web_out=import_style=typescript,mode=grpcwebtext:generated/tsgen \
 	server.proto \
